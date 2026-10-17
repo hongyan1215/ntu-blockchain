@@ -1,0 +1,135 @@
+/* ---------- Global polish ---------- */
+:root {
+  --c-gmx: #f57c00;      /* orange */
+  --c-dydx: #7e57c2;     /* purple */
+  --c-hl:  #2e7d32;      /* green  */
+  --c-oracle: #0288d1;
+  --c-danger: #c62828;
+}
+
+.slidev-layout {
+  font-feature-settings: "ss01", "cv11";
+}
+
+.slidev-layout h1 {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  border-bottom: 3px solid #111;
+  padding-bottom: 0.35em;
+  margin-bottom: 0.6em;
+  display: inline-block;
+}
+
+.slidev-layout h1::after {
+  content: "";
+  display: block;
+  width: 40%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--c-gmx), var(--c-dydx), var(--c-hl));
+  margin-top: 4px;
+}
+
+.slidev-layout table {
+  width: 100%;
+  font-size: 0.85em;
+  border-collapse: collapse;
+}
+.slidev-layout table th {
+  background: #f5f5f5;
+  font-weight: 600;
+  text-align: left;
+}
+.slidev-layout table th,
+.slidev-layout table td {
+  padding: 0.45em 0.7em;
+  border-bottom: 1px solid #e5e5e5;
+}
+.slidev-layout table tr:hover td { background: #fafafa; }
+
+/* Platform color chips inside tables */
+.gmx  { color: var(--c-gmx); font-weight: 600; }
+.dydx { color: var(--c-dydx); font-weight: 600; }
+.hl   { color: var(--c-hl); font-weight: 600; }
+
+/* Mermaid: let it breathe */
+.slidev-layout .mermaid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* Force-cap all mermaid SVGs to viewport regardless of {scale} hint */
+.slidev-layout .mermaid svg {
+  max-height: 70vh !important;
+  max-width: 94vw !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+/* Grid-cell mermaids: cap to cell so columns line up */
+.grid .mermaid svg {
+  max-height: 60vh !important;
+  max-width: 100% !important;
+}
+
+/* Full-bleed diagram slide */
+.diagram-slide {
+  padding: 0.8rem 1.4rem !important;
+  display: flex !important;
+  flex-direction: column;
+}
+.diagram-slide h1 {
+  font-size: 1.5rem;
+  margin: 0 0 0.3em 0;
+  flex-shrink: 0;
+}
+.diagram-slide .mermaid {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.diagram-slide .mermaid svg {
+  max-height: 72vh !important;
+  max-width: 92vw !important;
+}
+.diagram-slide .caption {
+  position: static !important;
+  margin-top: 0.6rem;
+  flex-shrink: 0;
+}
+
+/* Caption strip under a diagram */
+.caption {
+  position: absolute;
+  bottom: 1rem;
+  left: 1.6rem;
+  right: 1.6rem;
+  font-size: 0.78rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: 4px;
+}
+.caption-red    { background:#ffebee; border-left:4px solid var(--c-danger); }
+.caption-amber  { background:#fff8e1; border-left:4px solid #f9a825; }
+.caption-blue   { background:#e3f2fd; border-left:4px solid var(--c-oracle); }
+
+/* Cover */
+.cover-bg {
+  background: radial-gradient(ellipse at 30% 30%, #1a237e 0%, #000814 70%);
+  color: #fff;
+}
+
+/* Section divider */
+.slidev-layout.section {
+  background: linear-gradient(135deg, #111 0%, #2a2a3a 100%);
+  color: #fff;
+}
+.slidev-layout.section h1 {
+  border-bottom: none;
+  font-size: 3rem;
+  color: #fff;
+}
+.slidev-layout.section h1::after {
+  width: 100px;
+  height: 4px;
+}

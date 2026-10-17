@@ -1,0 +1,31 @@
+flowchart TD
+    Start([Trader holds open position on GMX v2]) --> Monitor[Keeper network monitors<br/>on-chain position state]
+    Monitor --> Oracle[Chainlink Data Streams<br/>publishes signed bid/ask report<br/>min/maxPrice]
+    Oracle --> Check{collateral &lt;<br/>min_collateral_threshold<br/>0.25 to 1 percent of notional?}
+    Check -- No --> Monitor
+    Check -- Yes --> Submit[Keeper submits<br/>liquidateOrder tx<br/>with signed oracle report]
+
+    Submit --> TwoPhase[Two-phase execution:<br/>1 block latency<br/>oracle price committed first]
+    TwoPhase --> Close[Position closed at:<br/>longs use maxPrice<br/>shorts use minPrice]
+
+    Close --> Fee[Deduct liquidation fee<br/>0.20 to 0.45 percent of notional]
+    Fee --> Split{Fee split}
+    Split -- 63 percent --> LP[GM/GLV pool<br/>LP receives fee + position PnL]
+    Split -- 37 percent --> Proto[Protocol treasury<br/>+ keeper subsidy + 1.2 percent Chainlink]
+
+    LP --> PoolUpdate[Pool absorbs<br/>realized PnL of liquidated position]
+    PoolUpdate --> Remaining[Return residual<br/>collateral to trader if any]
+
+    PoolUpdate --> ADLCheck{pendingPnL / poolValue<br/>&gt; MAX_PNL_FACTOR_FOR_ADL?}
+    ADLCheck -- No --> Done([Liquidation complete])
+    ADLCheck -- Yes --> ADL[ADL: protocol force-closes<br/>most-profitable positions<br/>to restore pool solvency<br/>mainly synthetic markets]
+    ADL --> Done
+
+    Remaining --> Done
+
+    classDef oracle fill:#e1f5ff,stroke:#0288d1,stroke-width:2px
+    classDef pool fill:#fff4e1,stroke:#f57c00,stroke-width:2px
+    classDef danger fill:#ffebee,stroke:#c62828,stroke-width:2px
+    class Oracle oracle
+    class LP,PoolUpdate pool
+    class ADL,Check,ADLCheck danger

@@ -1,0 +1,33 @@
+flowchart TD
+    Trigger([Account undercollateralized:<br/>equity &lt; maintenance margin]) --> Branch{Platform?}
+
+    Branch -- GMX --> G1[Keeper observes state]
+    G1 --> G2[Position closed at oracle price<br/>against GM pool]
+    G2 --> G3{pendingPnL ratio<br/>exceeds threshold?}
+    G3 -- No --> Gend([Settled])
+    G3 -- Yes --> Gadl[ADL: close profitable positions<br/>synthetic markets only]
+    Gadl --> Gend
+
+    Branch -- dYdX --> D1[Protocol places<br/>liquidation order on CLOB]
+    D1 --> D2[Fillable price =<br/>oracle ± 1.5× MMF spread]
+    D2 --> D3{Matched on book?}
+    D3 -- Yes --> Dend([Settled, fees to IF])
+    D3 -- No / shortfall --> D4[Insurance Fund<br/>absorbs bankruptcy spread]
+    D4 --> D5{IF depleted?}
+    D5 -- No --> Dend
+    D5 -- Yes --> Dadl[Deleveraging:<br/>offsetting profitable positions<br/>closed at bankruptcy price]
+    Dadl --> Dend
+
+    Branch -- Hyperliquid --> H1[Tier 1: Market liquidation<br/>up to 20 percent as market order<br/>30s cooldown]
+    H1 --> H2{Filled and account<br/>back above MM?}
+    H2 -- Yes --> Hend([Settled, residual to user])
+    H2 -- No / large position --> H3[Tier 2: HLP backstop<br/>vault absorbs entire position<br/>user loses MM buffer]
+    H3 --> H4{HLP solvent for this fill?}
+    H4 -- Yes --> Hend
+    H4 -- No --> H5[Tier 3: ADL<br/>rank by unrealized PnL × leverage<br/>force-close profitable peers]
+    H5 --> Hend
+
+    classDef adl fill:#ffebee,stroke:#c62828
+    classDef bs fill:#fff4e1,stroke:#f57c00
+    class Gadl,Dadl,H5 adl
+    class G2,D4,H3 bs

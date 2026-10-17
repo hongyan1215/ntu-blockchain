@@ -1,0 +1,32 @@
+flowchart LR
+    subgraph GMX["GMX v2 — Pool-Counterparty Model"]
+        direction TB
+        G1[Trader] --> G2[Smart contracts<br/>Arbitrum / Avalanche]
+        G2 --> G3[GM / GLV<br/>liquidity pool]
+        G4[Chainlink<br/>Data Streams] --> G2
+        G5[Keeper network] --> G2
+    end
+
+    subgraph DYDX["dYdX v4 — App-chain CLOB"]
+        direction TB
+        D1[Trader] --> D2[Cosmos SDK<br/>validator set]
+        D2 --> D3[On-chain<br/>order book]
+        D4[Validator oracle<br/>vote extensions] --> D2
+        D5[Insurance fund] --> D2
+    end
+
+    subgraph HL["Hyperliquid — CLOB + Backstop Vault"]
+        direction TB
+        H1[Trader] --> H2[HyperCore L1<br/>validators]
+        H2 --> H3[On-chain<br/>order book]
+        H4[Validator-weighted<br/>median oracle 3s] --> H2
+        H5[HLP backstop vault] --> H2
+    end
+
+    classDef pool fill:#fff4e1,stroke:#f57c00
+    classDef clob fill:#e8f5e9,stroke:#2e7d32
+    classDef oracle fill:#e1f5ff,stroke:#0288d1
+    class G3 pool
+    class D3,H3 clob
+    class G4,D4,H4 oracle
+    class H5,D5 pool

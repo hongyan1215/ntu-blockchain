@@ -1,0 +1,10 @@
+{
+  "name": "DOGE",
+  "image": "ipfs://bafybeibt3yrkmrkoq6r4urtxp4th6n6bonc4jh6rbvksqeuqk3lzmwosm4",
+  "description": "I love DOGE.",
+  "external_url": "https://doge.gov/",
+  "attributes": [
+    { "trait_type": "Name", "value": "DOGE" },
+    { "trait_type": "creator", "value": "DD" }
+  ]
+}
